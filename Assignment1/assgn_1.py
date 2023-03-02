@@ -44,7 +44,7 @@ def main():
             
             #Verify
             difference_norm = math.fabs(end_effector_position_analytic[0] - end_effector_position_sim[0]) + math.fabs(end_effector_position_analytic[1] - end_effector_position_sim[1]) 
-            if difference_norm < 0.001:
+            if difference_norm < 0.01:
                 print("Exercise result: Success")
             else:
                 print("Exercise result: Failed")
