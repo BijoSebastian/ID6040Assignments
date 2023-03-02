@@ -8,7 +8,6 @@ Manipuator simulation setup
 #Import libraries
 import time
 import math
-import numpy as np
 
 #Import files
 import sim_interface
