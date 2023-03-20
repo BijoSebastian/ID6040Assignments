@@ -1,5 +1,9 @@
-import math
-import time
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Mar 20 12:01:49 2023
+
+@author: Bijo Sebastian
+"""
 
 try:
   import sim
@@ -173,15 +177,4 @@ def sim_shutdown():
   sim.simxFinish(client_ID)      
 
   return           
-
-def collission_check():
-    #Check collission between links and wall
-    global link1_handle
-    global link2_handle
-    global wall_handle
-    res, collisionState1 = sim.simxCheckCollision(client_ID, link1_handle, wall_handle, sim.simx_opmode_buffer)
-    res, collisionState2 = sim.simxCheckCollision(client_ID, link2_handle, wall_handle, sim.simx_opmode_buffer)
-    if collisionState1 or collisionState2:
-        return True
-    else:
-        return False
+                
