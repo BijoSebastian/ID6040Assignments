@@ -1,5 +1,11 @@
-import math
-import time
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Mar 20 12:01:49 2023
+
+@author: Bijo Sebastian
+"""
+
+import time 
 
 try:
   import sim
@@ -21,7 +27,7 @@ def sim_init():
   
   #Initialize sim interface
   sim.simxFinish(-1) # just in case, close all opened connections
-  client_ID=sim.simxStart('127.0.0.1',19999,True,True,5000,5) # Connect to CoppeliaSim    
+  client_ID=sim.simxStart('127.0.0.1',19997,True,True,5000,5) # Connect to CoppeliaSim    
   if client_ID!=-1:
     print ('Connected to remote API server')
     return True
@@ -40,11 +46,12 @@ def get_handles():
   global wall_handle
 
   # Handle to joints, end effector, wall, and goal:
-  res , joint_1_handle = sim.simxGetObjectHandle(client_ID, "/joint_1", sim.simx_opmode_blocking)
-  res , joint_2_handle = sim.simxGetObjectHandle(client_ID, "/joint_2", sim.simx_opmode_blocking)
-  res , end_effector_handle = sim.simxGetObjectHandle(client_ID, "/end_effector", sim.simx_opmode_blocking)
-  res , link1_handle = sim.simxGetObjectHandle(client_ID, "/link1Respondable", sim.simx_opmode_blocking)
-  res , link2_handle = sim.simxGetObjectHandle(client_ID, "/link2Respondable", sim.simx_opmode_blocking)
+  res , joint_1_handle = sim.simxGetObjectHandle(client_ID, "/MTB/joint_1", sim.simx_opmode_blocking)
+
+  res , joint_2_handle = sim.simxGetObjectHandle(client_ID, "/MTB/joint_2", sim.simx_opmode_blocking)
+  res , end_effector_handle = sim.simxGetObjectHandle(client_ID, "/MTB/end_effector", sim.simx_opmode_blocking)
+  res , link1_handle = sim.simxGetObjectHandle(client_ID, "/MTB/link1Respondable", sim.simx_opmode_blocking)
+  res , link2_handle = sim.simxGetObjectHandle(client_ID, "/MTB/link2Respondable", sim.simx_opmode_blocking)
   res , wall_handle = sim.simxGetObjectHandle(client_ID, "/wall", sim.simx_opmode_blocking)
 
   res , temp_goal_handle = sim.simxGetObjectHandle(client_ID, "/goal_1", sim.simx_opmode_blocking)
@@ -62,13 +69,10 @@ def get_handles():
   res , goal_position = sim.simxGetObjectPosition(client_ID, goal_handles[1], -1 , sim.simx_opmode_streaming)
   res , goal_position = sim.simxGetObjectPosition(client_ID, goal_handles[2], -1 , sim.simx_opmode_streaming)
   
-  # Set all joints to zero to ensure manipulator is starting configuration
-  res = sim.simxSetJointTargetPosition(client_ID, joint_1_handle, 0, sim.simx_opmode_streaming)
-  res = sim.simxSetJointTargetPosition(client_ID, joint_2_handle, 0, sim.simx_opmode_streaming)
-  
   # Set all joint rates to zero to ensure manipulator is starting configuration
-  #res = sim.simxSetJointTargetVelocity(client_ID, joint_1_handle, 0, sim.simx_opmode_streaming)
-  #res = sim.simxSetJointTargetVelocity(client_ID, joint_2_handle, 0, sim.simx_opmode_streaming)
+  res = sim.simxSetJointTargetVelocity(client_ID, joint_1_handle, 0, sim.simx_opmode_streaming)
+  res = sim.simxSetJointTargetVelocity(client_ID, joint_2_handle, 0, sim.simx_opmode_streaming)
+  time.sleep(2.0)
   
   #Do collission checks
   res, collisionState1 = sim.simxCheckCollision(client_ID, link1_handle, wall_handle, sim.simx_opmode_streaming )
@@ -106,22 +110,17 @@ def get_joint_position():
 
   return [joint_1_position, joint_2_position]       
 
-def set_joint_position(joint_angles):
-  #Function to set the joint angles
+def set_joint_velocity(joint_velcotiy_in_radps):
+  #Function to set the joint velocity
   global sim
   global client_ID
   global joint_1_handle
   global joint_2_handle
- 
-  # # Convert to radians
-  # joint_amgles_in_rad = [0,0]
-  # joint_amgles_in_rad[0] = joint_angles[0]*(3.14/180)
-  # joint_amgles_in_rad[1] = joint_angles[1]*(3.14/180)
-  
-  # Set position
-  sim.simxSetJointTargetPosition(client_ID, joint_1_handle, joint_angles[0], sim.simx_opmode_oneshot_wait)
-  sim.simxSetJointTargetPosition(client_ID, joint_2_handle, joint_angles[1], sim.simx_opmode_oneshot_wait)
-  
+
+  # Set all joint rates to zero to ensure manipulator is starting configuration
+  sim.simxSetJointTargetVelocity(client_ID, joint_1_handle, joint_velcotiy_in_radps[0], sim.simx_opmode_oneshot_wait)
+  sim.simxSetJointTargetVelocity(client_ID, joint_2_handle, joint_velcotiy_in_radps[1], sim.simx_opmode_oneshot_wait)
+
   return  
 
 def get_end_effector_position():
@@ -173,15 +172,4 @@ def sim_shutdown():
   sim.simxFinish(client_ID)      
 
   return           
-
-def collission_check():
-    #Check collission between links and wall
-    global link1_handle
-    global link2_handle
-    global wall_handle
-    res, collisionState1 = sim.simxCheckCollision(client_ID, link1_handle, wall_handle, sim.simx_opmode_buffer)
-    res, collisionState2 = sim.simxCheckCollision(client_ID, link2_handle, wall_handle, sim.simx_opmode_buffer)
-    if collisionState1 or collisionState2:
-        return True
-    else:
-        return False
+                
