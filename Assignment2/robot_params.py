@@ -8,4 +8,4 @@ Created on Mon Mar 20 12:01:49 2023
 #Length of robot links 
 
 link_1_length = 0.467 #[m] 
-link_2_length = 0.400 #[m] 
+link_2_length = 0.4005 #[m] 
