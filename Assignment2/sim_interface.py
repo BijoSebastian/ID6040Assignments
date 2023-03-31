@@ -4,7 +4,7 @@ Created on Mon Mar 20 12:01:49 2023
 
 @author: Bijo Sebastian
 """
-
+import math
 try:
   import sim
 except:
@@ -119,8 +119,8 @@ def set_joint_position(joint_angles):
  
   # Convert to radians
   joint_amgles_in_rad = [0,0]
-  joint_amgles_in_rad[0] = joint_angles[0]*(3.14/180)
-  joint_amgles_in_rad[1] = joint_angles[1]*(3.14/180)
+  joint_amgles_in_rad[0] = joint_angles[0]*(math.pi/180)
+  joint_amgles_in_rad[1] = joint_angles[1]*(math.pi/180)
   
   # Set position
   sim.simxSetJointTargetPosition(client_ID, joint_1_handle, joint_amgles_in_rad[0], sim.simx_opmode_oneshot_wait)
