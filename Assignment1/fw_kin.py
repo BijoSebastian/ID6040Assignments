@@ -8,5 +8,4 @@ def fw_kin(joint_angles):
     #Hint: see file robot_params for link lengths
     end_effector_position_analytic = [x_end_effector, y_end_effector]
     
-    print("End effector position (analytic)", end_effector_position_analytic)
     return end_effector_position_analytic
