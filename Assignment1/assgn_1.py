@@ -40,7 +40,8 @@ def main():
             end_effector_position_sim = sim_interface.get_end_effector_position()
             
             #Compute end effector position analytically
-            end_effector_position_analytic = fw_kin.fw_kin(joint_angles)                                  
+            end_effector_position_analytic = fw_kin.fw_kin(joint_angles) 
+            print("End effector position (analytic)", end_effector_position_analytic)
             
             #Verify
             difference_norm = math.fabs(end_effector_position_analytic[0] - end_effector_position_sim[0]) + math.fabs(end_effector_position_analytic[1] - end_effector_position_sim[1]) 
