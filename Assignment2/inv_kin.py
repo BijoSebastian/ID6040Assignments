@@ -15,6 +15,4 @@ def inv_kin_fn(goal_position):
     y_desired = goal_position[1]
 
     ### Fill this part ###
-
-    print("Desired joint angles",[theta_1, theta_2])
     return [theta_1, theta_2]
