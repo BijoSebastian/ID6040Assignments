@@ -26,6 +26,7 @@ def main():
             
                 #Compute joint angles to get to desired position
                 joint_angles = inv_kin.inv_kin_fn(goal_position)
+                print("Desired joint angles",[joint_angles[0], joint_angles[1]])
             
                 #Set joint angles 
                 sim_interface.set_joint_position(joint_angles)
