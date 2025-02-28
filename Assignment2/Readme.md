@@ -13,7 +13,7 @@ Coppeliasim: V4.3.0
 
   2. For the 2 DOF planar manipulator, compute the pair of joint angles(in degrees) for a given end effector position. See the file robot_params.py for link length.
 
-  3. Complete the inverse kinematics function in the file **inv_kin.py**.Do not make any changes to the other code files provided to you.
+  3. Complete the inverse kinematics function in the file **inv_kin.py**. Do not make any changes to the other code files provided to you.
   
   4. Once you have completed the inverse kinematic implementation, launch Coppeliasim. Click on File->Open Scene, navigate to the downloaded setup, and select the file **2R_manipulator.ttt**. Run the simulation by clicking on the light blue play button.
 
