@@ -16,7 +16,8 @@ import robot_params
 import kinematics_helper_functions
    
 def at_goal(goal_position):
-    #Check if manipulator end effector has reached goal location 
+    #Check if manipulator end effector has reached goal location given in m
+   
     #Obtain end effector position
     end_effector_position = sim_interface.get_end_effector_position()            
     
