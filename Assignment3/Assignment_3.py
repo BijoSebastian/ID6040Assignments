@@ -13,25 +13,8 @@ import numpy as np
 #Import files
 import sim_interface
 import robot_params
-import differential_kinematics
-
-def inv_kin(goal_position):
-    #Inverse kinematics function for 2 link manipulator 
-    x_desired = goal_position[0]
-    y_desired = goal_position[1]
-    
-    cos_theta_2 = (x_desired*x_desired + y_desired*y_desired - robot_params.link_1_length*robot_params.link_1_length - robot_params.link_2_length*robot_params.link_2_length) / (2*robot_params.link_1_length*robot_params.link_2_length)
-    sin_theta_2 = math.sqrt(1 - (cos_theta_2*cos_theta_2))
-    theta_2 = math.atan2(sin_theta_2, cos_theta_2)
+import kinematics_helper_functions
    
-    M = robot_params.link_1_length + robot_params.link_2_length*cos_theta_2
-    N = robot_params.link_2_length*sin_theta_2
-    
-    theta_1 =  math.atan2(y_desired , x_desired) - math.atan2(N, M)
-  
-    print("Desired joint angles",[theta_1, theta_2])
-    return [theta_1, theta_2]
-    
 def at_goal(goal_position):
     #Check if manipulator end effector has reached goal location 
     #Obtain end effector position
@@ -55,15 +38,14 @@ def main():
         if (sim_interface.start_simulation()):
             
             #Exercise 3
+            #Starting at goal 2, move the manipulator end effector along global x axis at a speed of 0.01m/s to reach Goal 
             
-            #Starting at goal 2, move the manipulator end effecot along global x axis at a speed of 0.01m/s to reach Goal 3
-            
-            #Obtain goal_3 position
+            #Obtain goal position
             goal_position = sim_interface.get_goal_position(3)
                   
             while not at_goal(goal_position):
                 current_joint_angles = sim_interface.get_joint_position()
-                desired_joint_angle_rates = differential_kinematics.get_desired_joint_rate(current_joint_angles)                
+                desired_joint_angle_rates = kinematics_helper_functions.get_desired_joint_rate(current_joint_angles)                
                 print("Joint angle rates", desired_joint_angle_rates)
                 sim_interface.set_joint_velocity(desired_joint_angle_rates)
                 time.sleep(0.1)
